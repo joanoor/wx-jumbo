@@ -1,0 +1,39 @@
+{
+  "name": "wx-jumbo",
+  "version": "1.0.0",
+  "description": "一个小程序Component框架，封装了混入、存储、地图、安全、时间、事件和一些常用的方法",
+  "miniprogram": "dist",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joanor/summer.git"
+  },
+  "keywords": [
+    "miniprogram"
+  ],
+  "author": "joanoor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joanor/summer/issues"
+  },
+  "homepage": "https://github.com/joanor/summer#readme",
+  "dependencies": {
+    "miniprogram-computed": "^2.1.1",
+    "mobx-miniprogram": "^4.13.2",
+    "mobx-miniprogram-bindings": "^1.2.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.0",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
+  }
+}
