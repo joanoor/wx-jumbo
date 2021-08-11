@@ -1,8 +1,8 @@
-const dayjs = require( './dayjs/index' )    // dayjs轻量级处理时间
-const Event = require( './event/index' )    // 时间
-const Storage = require( './storage/index' )      // 小程序的本地存储
-const utils = require( './utils/index' )      // 一些常用方法
-// const Libs = Object.assign( { Event, Map, Storage } )
+const dayjs = require( './dayjs' )    // dayjs轻量级处理时间
+const Event = require( './event' )    // 时间
+const Storage = require( './storage' )      // 小程序的本地存储
+const service = require( './request' )
+const utils = require( './utils' )      // 一些常用方法
 
 const kale = Object.assign( {}, utils, {
   /* 封装triggerEvent */
@@ -37,7 +37,7 @@ const kale = Object.assign( {}, utils, {
   },
   /* 封装获取存储对象 */
   getItem: function ( key ) {
-    Storage.getStorageSync( key )
+    return Storage.getStorageSync( key )
   },
   /* 封装删除指定存储对象 */
   deleteItem: function ( key ) {
@@ -61,21 +61,73 @@ const kale = Object.assign( {}, utils, {
   }
 } )
 
-let methodObj = {}
+var yoyo = {}
 
-function getBaseBehavior () {
-  let obj = Object.assign( {}, kale )
-  methodObj = Object.keys( obj ).reduce( ( acc, cur ) => {
-    acc = Object.assign( acc, { [ `$${ cur }` ]: obj[ cur ] } )
+function getBaseBehavior ( apiMap ) {
+  const newKale = Object.assign( {}, kale, apiMap )
+  const methodObj = Object.keys( newKale ).reduce( ( acc, cur ) => {
+    acc = Object.assign( acc, { [ `$${ cur }` ]: newKale[ cur ] } )
+    return acc
   }, {} )
   return Behavior( {
     methods: methodObj
   } )
 }
 
-exports.methodObj = methodObj
-exports.inject = function ( funcname, f ) {
-  methodObj[ `$${ funcname }` ] = f
+function awaitWrap ( promise ) {
+  return promise
+    .then( ( res ) => ( { success: res, error: null } ) )
+    .catch( ( err ) => ( { success: null, error: err } ) )
 }
-exports.dayjs = dayjs
-exports.baseBehavior= getBaseBehavior()
+
+function getType ( value ) {
+  return utils.getTypeOfValue( value ).toLowerCase()
+}
+
+/**
+ * 小程序封装方法，使用inject，全局混入
+ * @param {string} funcname 
+ * @param {func} func 
+ */
+const inject = async ( funcname, func, ...successCodes ) => {
+  if ( [ 'promise', 'function' ].indexOf( getType( func ) ) !== -1 ) {
+    let resultFunc = ''
+    if ( getType( func ) === 'promise' ) {
+      resultFunc = async ( ...funcParams ) => {
+        if ( !successCodes || successCodes.length === 0 ) {
+          successCodes = [ 200, 0 ]
+        } else {
+          successCodes = [ ...successCodes ]
+        }
+        const { success, error } = await awaitWrap( func( ...funcParams ) )
+        if ( error !== null ) {
+          console.log( 'Oh......, 出错了!', error )
+          return {
+            data: null,
+          }
+        } else {
+          const { code = 200, message = '' } = success
+          if ( successCodes.indexOf( code ) > -1 ) {
+            return success
+          } else {
+            console.log( `返回数据报错---->${ code }---->${ message }` )
+          }
+        }
+      }
+    } else if ( getType( func ) === 'function' ) {
+      resultFunc = func
+    }
+    yoyo[ `${ funcname }` ] = resultFunc
+  } else {
+    console.log('检测到不支持的注入的格式，跳过注入')
+  }
+}
+
+
+module.exports = {
+  baseBehavior: getBaseBehavior,
+  inject,
+  _axios: service,
+  dayjs,
+  yoyo
+}

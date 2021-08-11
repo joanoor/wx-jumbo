@@ -1,9 +1,9 @@
 {
   "name": "wx-jumbo",
-  "version": "1.0.0",
+  "version": "1.2.2",
   "description": "一个小程序Component框架，封装了混入、存储、地图、安全、时间、事件和一些常用的方法",
   "miniprogram": "dist",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack --config webpack.config.js"

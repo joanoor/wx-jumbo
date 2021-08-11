@@ -45,20 +45,16 @@ const touchEnd = e => {
   if (moveX <= moveY) {                                       // 判断上下滑动
     if (touchMoveY - touchStartY <= -120 && time < 10) {
       console.log("向上滑动")
-      this._slidestatus = '向上滑动'
     }
     if (touchMoveY - touchStartY >= 120 && time < 10) {
       console.log('向下滑动 ');
-      this._slidestatus = '向下滑动'
     }
   } else {                                                    // 判断左右滑动
     if (touchMoveX - touchStartX <= -120 && time < 10) {
       console.log("向左滑动")
-      this._slidestatus = '向左滑动'
     }
     if (touchMoveX - touchStartX >= 120 && time < 10) {
       console.log('向右滑动');
-      this._slidestatus = '向右滑动'
     }
   }
   touchMoveX = 0

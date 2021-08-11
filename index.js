@@ -1,6 +1,6 @@
 
 const computedBehavior = require( 'miniprogram-computed' )
-import { methodObj, dayjs, inject,baseBehavior } from './src'
+const { yoyo, dayjs, inject, baseBehavior, _axios } = require( './src' )
 
 const relationFunctions = {
   ancestor: {   // 祖先
@@ -61,10 +61,7 @@ function makeRelation ( options, xtOpitions, relation ) {
   } );
 }
 
-exports.methodObj=methodObj
-exports.dayjs=dayjs
-exports.inject=inject
-module.exports = function ( xtOpitions ) {
+function xComponent ( xtOpitions ) {
   const options = {};
   mapKeys( xtOpitions, options, {
     data: 'data',
@@ -102,7 +99,7 @@ module.exports = function ( xtOpitions ) {
 
   // add default behaviors
   options.behaviors = options.behaviors || [];
-  options.behaviors.push( baseBehavior );
+  options.behaviors.push( baseBehavior(yoyo) );
   // options.behaviors.push(storebehavior);
   options.behaviors.push( computedBehavior );
 
@@ -127,4 +124,12 @@ module.exports = function ( xtOpitions ) {
   };
 
   Component( options );
+}
+
+module.exports = {
+  xComponent,
+  yoyo,
+  dayjs,
+  inject,
+  _axios
 }

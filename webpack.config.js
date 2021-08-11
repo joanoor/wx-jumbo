@@ -9,17 +9,5 @@ module.exports = {
     filename: '[name].js',
     path: distDir,
     libraryTarget: 'commonjs2',
-  },
-  module: {
-    rules: [ {
-      test: /\.js$/i,
-      use: [ {
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true,
-        },
-      } ],
-      exclude: /node_modules/
-    } ],
-  },
+  }
 }
