@@ -181,7 +181,7 @@ const hideName = name => {
  * @returns { String }
  */
 const getTypeOfValue = value => {
-  return Object.prototype.toString.call( value ).slice( 8, -1 )
+  return Object.prototype.toString.call( value ).slice( 8, -1 ).toLowerCase()
 }
 
 module.exports = {

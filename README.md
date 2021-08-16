@@ -8,6 +8,9 @@
 3、具体使用与Vue类似
 ```
 const { xComponent } = require('wx-jumbo')
+const { getStoreBindings } = require('wx-jumbo')
+
+import { store } from './store'
 
 xComponent({
   props:{},
@@ -19,8 +22,7 @@ xComponent({
   destroyed(){},
   relations:{},
   watch:{},
-  classes:[],       // 外部样式类
-  storeBindings:{}  // mobx状态管理
+  storeBindings:getStoreBindings(store,['testA','testB'])  // mobx状态管理
 })
 ```
 
@@ -113,7 +115,7 @@ const startInstall = require('utils.js')
 startInject()
 startInstall()
 
-// 以上注入的jumoTo，sendSms才能生效
+// 这样上面注入的jumoTo、sendSms才能生效
 // 在下面的xComponent中可以直接this.$sendSms()、this.$jumpTo()这样调用
 xComponent({
   data:{},
@@ -125,5 +127,31 @@ xComponent({
 
 ```
 
+## 使用mobx
+```
+1、在任意目录下新建store.js文件  
+const {createMobxStore}=require('wx-jumbo')
+export const store = new createMobxStore({
+  state:{
+    testA:'testA',
+    testB:'testB'
+  },
+  actions:{
+    setTestA(newValue){
+      this.testA = newValue
+    }
+  }
+})
+2、在页面中
+const {getStoreBindings}=require('wx-jumbo')
+import {store} from './store'
+
+xComponent({
+  storeBindings:getStoreBindings(store,['testA','testB'])
+})
+```
+
+
 ## 附录
 >v1.1.0：添加_axios网络请求，xComponents中使用方法与axios相似，直接  ```_axios.get(url,params)```，返回是一个promise，返回结果已对正确码200或0以及错误码进行了处理，不需要再重复判断  
+>v1.2.4：新增mobx状态管理

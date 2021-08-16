@@ -1,6 +1,6 @@
 {
   "name": "wx-jumbo",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "一个小程序Component框架，封装了混入、存储、地图、安全、时间、事件和一些常用的方法",
   "miniprogram": "dist",
   "main": "index.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/joanor/summer.git"
+    "url": "git+https://github.com/joanor/wx-jumbo.git"
   },
   "keywords": [
     "miniprogram"
@@ -21,9 +21,9 @@
   "author": "joanoor",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/joanor/summer/issues"
+    "url": "https://github.com/joanor/wx-jumbo/issues"
   },
-  "homepage": "https://github.com/joanor/summer#readme",
+  "homepage": "https://github.com/joanor/wx-jumbo#readme",
   "dependencies": {
     "miniprogram-computed": "^2.1.1",
     "mobx-miniprogram": "^4.13.2",

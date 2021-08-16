@@ -15,10 +15,10 @@ const kale = Object.assign( {}, utils, {
     return new Promise( ( resolve ) => wx.nextTick( resolve ) )
   },
   /* 封装boundingClientRect */
-  getRect: function ( selector = '', all = false ) {
+  getRect: function ( selector = '',that = this, all = false ) {
     return new Promise( ( resolve ) => {
       wx.createSelectorQuery()
-        .in( this )
+        .in( that )
       [ all ? 'selectAll' : 'select' ]( selector )
         .boundingClientRect( ( rect ) => {
           if ( all && Array.isArray( rect ) && rect.length ) {
@@ -80,19 +80,15 @@ function awaitWrap ( promise ) {
     .catch( ( err ) => ( { success: null, error: err } ) )
 }
 
-function getType ( value ) {
-  return utils.getTypeOfValue( value ).toLowerCase()
-}
-
 /**
  * 小程序封装方法，使用inject，全局混入
  * @param {string} funcname 
  * @param {func} func 
  */
 const inject = async ( funcname, func, ...successCodes ) => {
-  if ( [ 'promise', 'function' ].indexOf( getType( func ) ) !== -1 ) {
+  if ( [ 'promise', 'function' ].indexOf( utils.getTypeOfValue( func ) ) !== -1 ) {
     let resultFunc = ''
-    if ( getType( func ) === 'promise' ) {
+    if ( utils.getTypeOfValue( func ) === 'promise' ) {
       resultFunc = async ( ...funcParams ) => {
         if ( !successCodes || successCodes.length === 0 ) {
           successCodes = [ 200, 0 ]
@@ -114,7 +110,7 @@ const inject = async ( funcname, func, ...successCodes ) => {
           }
         }
       }
-    } else if ( getType( func ) === 'function' ) {
+    } else if ( utils.getTypeOfValue( func ) === 'function' ) {
       resultFunc = func
     }
     yoyo[ `${ funcname }` ] = resultFunc

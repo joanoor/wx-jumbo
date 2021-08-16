@@ -1,6 +1,8 @@
 
 const computedBehavior = require( 'miniprogram-computed' )
 const { yoyo, dayjs, inject, baseBehavior, _axios } = require( './src' )
+const { createMobxStore, getStoreBindings } = require( './src/store' )
+import { storeBindingsBehavior } from 'mobx-miniprogram-bindings'
 
 const relationFunctions = {
   ancestor: {   // 祖先
@@ -86,11 +88,7 @@ function xComponent ( xtOpitions ) {
 
   // add default store, each page will use it
   // options.storeBindings = {
-  //   store,
-  //   fields: {
-  //     // username: () => store.username
-  //   },
-  //   // actions: ['update']
+
   // }
 
   // add default externalClasses
@@ -99,9 +97,10 @@ function xComponent ( xtOpitions ) {
 
   // add default behaviors
   options.behaviors = options.behaviors || [];
-  options.behaviors.push( baseBehavior(yoyo) );
+  options.behaviors.push( baseBehavior( yoyo ) );
   // options.behaviors.push(storebehavior);
   options.behaviors.push( computedBehavior );
+  options.behaviors.push( storeBindingsBehavior );
 
   // map field to form-field behavior
   if ( xtOpitions.field ) {
@@ -131,5 +130,7 @@ module.exports = {
   yoyo,
   dayjs,
   inject,
-  _axios
+  _axios,
+  createMobxStore,
+  getStoreBindings
 }
