@@ -1,4 +1,4 @@
-const { observable, action } =require("mobx-miniprogram")
+const { observable, action } = require( "mobx-miniprogram" )
 const { getTypeOfValue } = require( '../utils' )
 
 /**
@@ -34,22 +34,23 @@ class createMobxStore {
   }
 }
 
+
 /* *******************这是分割线******************* */
 
-function expendStates ( store, arr ) {
-  return arr.reduce( ( acc, cur ) => {
-    if ( !acc[ cur ] ) acc[ cur ] = () => store[ cur ]
-    return acc
-  }, {} )
-}
-
-function expendActions ( store ) {
-  const keysArr = Object.keys( store )
-  keysArr.reduce( ( acc, cur ) => {
-    if ( getTypeOfValue( cur ) === 'function' ) {
+function expend ( store, arr ) {
+  let list = []
+  if ( arr && arr.length > 0 ) {
+    list = arr
+  } else {
+    list = Object.keys( store )
+  }
+  return list.reduce( ( acc, cur ) => {
+    if ( getTypeOfValue( store[ cur ] ) === 'function' ) {
       if ( !acc[ cur ] ) acc[ cur ] = cur
-      return acc
+    } else {
+      if ( !acc[ cur ] ) acc[ cur ] = () => store[ cur ]
     }
+    return acc
   }, {} )
 }
 
@@ -57,11 +58,11 @@ function expendActions ( store ) {
  * 生成getStoreBindings绑定
  */
 function getStoreBindings ( store, arr ) {
-  if ( getTypeOfValue( store ) === 'object' && getTypeOfValue( arr ) === 'array' ) {
+  if ( getTypeOfValue( store ) === 'object' ) {
     return {
       store,
-      fields: expendStates( store, arr ),
-      actions: expendActions( store )
+      fields: expend( store, arr ),
+      actions: expend( store, arr )
     }
   }
 }

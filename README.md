@@ -152,6 +152,18 @@ xComponent({
 ```
 
 
+## 说明
+1、如果在项目中使用behavior，那么生命周期钩子，暂时只能使用小程序原生的，不能使用wx-jumbo中的  
+| wx-jumbo | 原生钩子 |
+|------|------|
+| beforeCreate | created |
+| created | attached |
+| mounted | ready |
+| destroyed | detached |
+
+
+
 ## 附录
 >v1.1.0：添加_axios网络请求，xComponents中使用方法与axios相似，直接  ```_axios.get(url,params)```，返回是一个promise，返回结果已对正确码200或0以及错误码进行了处理，不需要再重复判断  
 >v1.2.4：新增mobx状态管理
+>v1.2.5：修改mobx状态管理bug

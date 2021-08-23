@@ -15,9 +15,13 @@ const kale = Object.assign( {}, utils, {
     return new Promise( ( resolve ) => wx.nextTick( resolve ) )
   },
   /* 封装boundingClientRect */
-  getRect: function ( selector = '',that = this, all = false ) {
+  getRect: function ( selector = '', iscom = false, that = this, all = false ) {
     return new Promise( ( resolve ) => {
-      wx.createSelectorQuery()
+      let _that = wx
+      if ( iscom ) {
+        _that = this
+      }
+      _that.createSelectorQuery()
         .in( that )
       [ all ? 'selectAll' : 'select' ]( selector )
         .boundingClientRect( ( rect ) => {
@@ -31,37 +35,38 @@ const kale = Object.assign( {}, utils, {
         .exec()
     } )
   },
-  /* 封装存储对象 */
-  setItem: function ( key, value, expiration ) {
-    Storage.setStorageSync( key, value, expiration )
-  },
-  /* 封装获取存储对象 */
-  getItem: function ( key ) {
-    return Storage.getStorageSync( key )
-  },
-  /* 封装删除指定存储对象 */
-  deleteItem: function ( key ) {
-    Storage.removeStorageSync( key )
-  },
-  /* 封装清空存储对象 */
-  clearItem: function () {
-    Storage.clearStorageSync()
-  },
-  /* 添加事件监听 */
-  addEventListener: function ( type, callback, scope ) {
-    Event.addEventListener( type, callback, scope )
-  },
-  /* 移除事件监听 */
-  removeEventListener: function ( type ) {
-    Event.removeEventListener( type )
-  },
-  /* 发布事件 */
-  dispatch: function ( type, target ) {
-    Event.dispatch( type, target )
-  }
 } )
 
-var yoyo = {}
+var yoyo = {
+    /* 封装存储对象 */
+    setItem: function ( key, value, expiration ) {
+      Storage.setStorageSync( key, value, expiration )
+    },
+    /* 封装获取存储对象 */
+    getItem: function ( key ) {
+      return Storage.getStorageSync( key )
+    },
+    /* 封装删除指定存储对象 */
+    deleteItem: function ( key ) {
+      Storage.removeStorageSync( key )
+    },
+    /* 封装清空存储对象 */
+    clearItem: function () {
+      Storage.clearStorageSync()
+    },
+    /* 添加事件监听 */
+    addEventListener: function ( type, callback, scope ) {
+      Event.addEventListener( type, callback, scope )
+    },
+    /* 移除事件监听 */
+    removeEventListener: function ( type ) {
+      Event.removeEventListener( type )
+    },
+    /* 发布事件 */
+    dispatch: function ( type, target ) {
+      Event.dispatch( type, target )
+    }
+}
 
 function getBaseBehavior ( apiMap ) {
   const newKale = Object.assign( {}, kale, apiMap )
@@ -115,7 +120,7 @@ const inject = async ( funcname, func, ...successCodes ) => {
     }
     yoyo[ `${ funcname }` ] = resultFunc
   } else {
-    console.log('检测到不支持的注入的格式，跳过注入')
+    console.log( '检测到不支持的注入的格式，跳过注入' )
   }
 }
 
