@@ -4,7 +4,7 @@ const Storage = require( './storage' )      // 小程序的本地存储
 const service = require( './request' )
 const utils = require( './utils' )      // 一些常用方法
 
-const kale = Object.assign( {}, utils, {
+const kale = Object.assign( {}, {
   /* 封装triggerEvent */
   emit: function ( ...args ) {
     this.triggerEvent( ...args )
@@ -37,36 +37,36 @@ const kale = Object.assign( {}, utils, {
   },
 } )
 
-var yoyo = {
-    /* 封装存储对象 */
-    setItem: function ( key, value, expiration ) {
-      Storage.setStorageSync( key, value, expiration )
-    },
-    /* 封装获取存储对象 */
-    getItem: function ( key ) {
-      return Storage.getStorageSync( key )
-    },
-    /* 封装删除指定存储对象 */
-    deleteItem: function ( key ) {
-      Storage.removeStorageSync( key )
-    },
-    /* 封装清空存储对象 */
-    clearItem: function () {
-      Storage.clearStorageSync()
-    },
-    /* 添加事件监听 */
-    addEventListener: function ( type, callback, scope ) {
-      Event.addEventListener( type, callback, scope )
-    },
-    /* 移除事件监听 */
-    removeEventListener: function ( type ) {
-      Event.removeEventListener( type )
-    },
-    /* 发布事件 */
-    dispatch: function ( type, target ) {
-      Event.dispatch( type, target )
-    }
-}
+const yoyo = Object.assign( {}, utils, {
+  /* 封装存储对象 */
+  setItem: function ( key, value, expiration ) {
+    Storage.setStorageSync( key, value, expiration )
+  },
+  /* 封装获取存储对象 */
+  getItem: function ( key ) {
+    return Storage.getStorageSync( key )
+  },
+  /* 封装删除指定存储对象 */
+  deleteItem: function ( key ) {
+    Storage.removeStorageSync( key )
+  },
+  /* 封装清空存储对象 */
+  clearItem: function () {
+    Storage.clearStorageSync()
+  },
+  /* 添加事件监听 */
+  addEventListener: function ( type, callback, scope ) {
+    Event.addEventListener( type, callback, scope )
+  },
+  /* 移除事件监听 */
+  removeEventListener: function ( type ) {
+    Event.removeEventListener( type )
+  },
+  /* 发布事件 */
+  dispatch: function ( type, target ) {
+    Event.dispatch( type, target )
+  }
+} )
 
 function getBaseBehavior ( apiMap ) {
   const newKale = Object.assign( {}, kale, apiMap )

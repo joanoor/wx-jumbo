@@ -1,6 +1,6 @@
 {
   "name": "wx-jumbo",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "一个小程序Component框架，封装了混入、存储、地图、安全、时间、事件和一些常用的方法",
   "miniprogram": "dist",
   "main": "index.js",
